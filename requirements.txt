@@ -1,0 +1,5 @@
+tk # si Tkinter
+reportlab       # si PDF
+pandas          # si CSV
+utils         # si utils
+PyInstaller    # si PyInstaller
