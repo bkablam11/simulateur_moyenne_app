@@ -32,20 +32,29 @@ def calculer_suggestions(notes, coeffs, moy1, moy2, cible):
 
         # Calcul de la moyenne actuelle annuelle
         moyenne_annuelle_actuelle = (moy1 * coeff1 + moy2 * coeff2 + moyenne_actuelle * coeff3) / (coeff1 + coeff2 + coeff3)
-        # print(f"Moyenne actuelle annuelle (calculée) : {moyenne_annuelle_actuelle}")
 
         # Vérification de l'objectif
         objectif_atteint = moyenne_annuelle_actuelle >= cible
 
-        # Résultats
+        # Résultats initiaux
         resultats = f"Moyenne actuelle du 3e trimestre : {round(moyenne_actuelle, 2)}\n"
         resultats += f"Moyenne actuelle annuelle : {round(moyenne_annuelle_actuelle, 2)}\n"
         resultats += f"Moyenne annuelle souhaitée : {cible}\n"
+
         if objectif_atteint:
-            resultats += "✅ L'objectif est déjà atteint !"
+            resultats += "✅ L'objectif est déjà atteint !\n"
         else:
-            manque = cible - moyenne_annuelle_actuelle
-            resultats += f"🔺 Points à gagner pour atteindre l'objectif : {round(manque, 2)}\n"
+            manque = cible * (coeff1 + coeff2 + coeff3) - (moy1 * coeff1 + moy2 * coeff2 + moyenne_actuelle * coeff3)
+            resultats += f"🔺 Points à gagner pour atteindre l'objectif : {round(manque*total_coeffs, 2)}\n"
+
+            # Suggestions pour les matières
+            resultats += "\n📌 Suggestions pour améliorer les notes :\n"
+            for i, (note, coeff) in enumerate(zip(notes, coeffs)):
+                if note < 20:  # On ne peut pas dépasser 20
+                    note_min = round((manque / coeffs[i]) + notes[i], 2)
+                    if note_min > 20:
+                        note_min = 20
+                    resultats += f" - {matieres[i]} : Note minimale requise = {note_min}\n"
 
         return resultats, objectif_atteint
 

@@ -1,4 +1,17 @@
-Moyenne actuelle du 3e trimestre : 12.5
-Moyenne actuelle annuelle : 10.14
+Moyenne actuelle du 3e trimestre : 11.36
+Moyenne actuelle annuelle : 9.69
 Moyenne annuelle souhaitée : 10.1
-✅ L'objectif est déjà atteint !
+🔺 Points à gagner pour atteindre l'objectif : 45.16
+
+📌 Suggestions pour améliorer les notes :
+ - Français : Note minimale requise = 10.68
+ - Anglais : Note minimale requise = 12.68
+ - Mathématiques : Note minimale requise = 11.41
+ - Physique : Note minimale requise = 10.51
+ - SVT : Note minimale requise = 14.03
+ - Histoire-Géo : Note minimale requise = 17.05
+ - EDHC : Note minimale requise = 14.05
+ - Informatique : Note minimale requise = 10.05
+ - Conduite : Note minimale requise = 18.05
+ - EPS : Note minimale requise = 14.05
+
