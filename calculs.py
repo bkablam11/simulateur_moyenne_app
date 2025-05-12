@@ -13,41 +13,49 @@ matieres = [
 
 
 def calculer_moyenne_ponderee(notes, coeffs):
+    """Calcule la moyenne pondérée des notes avec leurs coefficients."""
     total = sum(note * coeff for note, coeff in zip(notes, coeffs))
     total_coeff = sum(coeffs)
     return total / total_coeff if total_coeff != 0 else 0
 
+
 def calculer_suggestions(notes, coeffs, moy1, moy2, cible):
-    total_notes = sum(n * c for n, c in zip(notes, coeffs))
-    total_coeffs = sum(coeffs)
-    moyenne_actuelle = total_notes / total_coeffs
+    """Calcule les suggestions pour atteindre une moyenne annuelle cible."""
+    try:
+        # Calcul de la moyenne actuelle pondérée
+        total_notes = sum(n * c for n, c in zip(notes, coeffs))
+        total_coeffs = sum(coeffs)
+        moyenne_actuelle = total_notes / total_coeffs if total_coeffs != 0 else 0
 
-    moy_t3_cible = 3 * cible - (moy1 + moy2)
-    manque = moy_t3_cible - moyenne_actuelle
+        # Coefficients des trimestres
+        coeff1, coeff2, coeff3 = 1, 2, 2
 
-    resultats = f"Moyenne 3e trimestre requise : {round(moy_t3_cible,2)}\n"
-    
-    resultats += f"Moyenne actuelle : {round(moyenne_actuelle,2)}\n"
+        # Calcul de la moyenne actuelle annuelle
+        moyenne_annuelle_actuelle = (moy1 * coeff1 + moy2 * coeff2 + moyenne_actuelle * coeff3) / (coeff1 + coeff2 + coeff3)
+        # print(f"Moyenne actuelle annuelle (calculée) : {moyenne_annuelle_actuelle}")
 
-    objectif_atteint = manque <= 0  # Ajout : objectif atteint ou non
-    
-    if objectif_atteint:
-        resultats += "✅ L'objectif est déjà atteint !"
-    else:
-        resultats += f"🔺 Points à gagner : {round(manque, 2)}\n"
-        indices_zero = [i for i, note in enumerate(notes) if note == 0]
-        total_coeff_zero = sum(coeffs[i] for i in indices_zero)
-        resultats += f"\n📌 Suggestions pour matières à 0 :\n"
-        for i in indices_zero:
-            note_min = round((manque * coeffs[i]) / total_coeff_zero, 2)
-            #resultats += f" - Matière {i + 1} (coeff {coeffs[i]}): ≥ {note_min}/20\n"
-            nom_matiere = matieres[i] if i < len(matieres) else f"Matière {i+1}"
-            resultats += f" - {nom_matiere} (coeff {coeffs[i]}): ≥ {note_min:.2f}/20\n"
+        # Vérification de l'objectif
+        objectif_atteint = moyenne_annuelle_actuelle >= cible
 
-    return resultats, objectif_atteint  # Retourne aussi l'état de l'objectif
+        # Résultats
+        resultats = f"Moyenne actuelle du 3e trimestre : {round(moyenne_actuelle, 2)}\n"
+        resultats += f"Moyenne actuelle annuelle : {round(moyenne_annuelle_actuelle, 2)}\n"
+        resultats += f"Moyenne annuelle souhaitée : {cible}\n"
+        if objectif_atteint:
+            resultats += "✅ L'objectif est déjà atteint !"
+        else:
+            manque = cible - moyenne_annuelle_actuelle
+            resultats += f"🔺 Points à gagner pour atteindre l'objectif : {round(manque, 2)}\n"
+
+        return resultats, objectif_atteint
+
+    except ZeroDivisionError:
+        raise ValueError("Les coefficients ne peuvent pas être tous nuls.")
+    except Exception as e:
+        raise ValueError(f"Erreur lors du calcul : {e}")
+
 
 def export_txt(resultats, filename="resultats.txt"):
+    """Exporte les résultats dans un fichier texte."""
     with open(filename, "w", encoding="utf-8") as f:
         f.write(resultats)
-        
-
